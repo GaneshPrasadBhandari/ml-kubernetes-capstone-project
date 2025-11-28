@@ -1,14 +1,14 @@
-# Use official Nginx image
 FROM nginx:alpine
 
-# Remove default Nginx page
+# Remove default Nginx content
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copy our static site
+# Copy our static HTML
 COPY index.html /usr/share/nginx/html/index.html
 
-# Nginx listens on port 80
+# Copy custom nginx config
+COPY nginx.conf /etc/nginx/nginx.conf
+
 EXPOSE 80
 
-# Use default nginx start command
 CMD ["nginx", "-g", "daemon off;"]

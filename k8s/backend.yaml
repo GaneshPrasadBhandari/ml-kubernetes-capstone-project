@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: backend-deployment
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: backend
@@ -23,11 +23,10 @@ kind: Service
 metadata:
   name: backend-service
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: backend
   ports:
     - name: http
-      port: 5000        # service port
-      targetPort: 5000  # container port
-      nodePort: 30001   # NodePort on Minikube node
+      port: 5000        # Cluster-internal port
+      targetPort: 5000  # Container port

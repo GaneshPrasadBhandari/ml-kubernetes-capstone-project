@@ -7,7 +7,9 @@
 <body>
   <h1>Frontend Nginx App</h1>
   <p>This page is served from an Nginx container.</p>
-  <img src="http://backend-service:5000/static/myimage.jpg" alt="Backend Image" />
+
+  <!-- Image served from backend via Nginx proxy -->
+  <img src="/api/image" alt="Backend Image" style="max-width: 300px; display: block; margin-bottom: 16px;" />
 
   <button onclick="callBackend()">Call Backend API</button>
   <pre id="output"></pre>
@@ -15,10 +17,11 @@
   <script>
     async function callBackend() {
       try {
-        // For local Docker testing, backend will run on localhost:5000
-        const res = await fetch("http://backend-service:5000/api/hello");
+        // Call relative URL; Nginx will proxy to backend-service inside cluster
+        const res = await fetch("/api/hello");
         const data = await res.json();
-        document.getElementById("output").textContent = JSON.stringify(data, null, 2);
+        document.getElementById("output").textContent =
+          JSON.stringify(data, null, 2);
       } catch (err) {
         document.getElementById("output").textContent = "Error: " + err;
       }
